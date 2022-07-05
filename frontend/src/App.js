@@ -12,7 +12,7 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={<TicTacToe />}></Route>
+        <Route exact path="/tictactoe" element={<TicTacToe />}></Route>
       </Routes>
     </Router>
   ); 
