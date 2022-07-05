@@ -1,5 +1,5 @@
 import React from 'react';
-import TicTacToe from './views/ttt-view/GamePage.js'
+import TicTacToe from './components/GamePage.js'
 
 import {
   BrowserRouter as Router,

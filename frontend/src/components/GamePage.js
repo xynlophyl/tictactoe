@@ -1,48 +1,67 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { Component } from "react";
+const game = require("./GameLogic.js")  
+
 
 class TicTacToe extends Component{
   constructor(props) {
     super(props);
     this.state = { 
-      grid_vals: ["","","","","","","","",""],
+      gridVals: ["","","","","","","","",""],
       difficulties: ['Easy','Medium','Hard'],
       players: ['Computer','Two Player'],
-      game_difficulty: 0,
-      // game_difficulty: false,
-      num_players: 1,
-      curr_player: 0,
-      game_over: false,
+      gameDifficulty: 0,
+      numPlayers: 1,
+      currPlayer: 0,
+      winningTriplet: [],
+      gameState: -1,
+      cellsLeft: 9,
     }
   }
-  
+
   /* ON CLICK FUNCTIONS */
 
   cellOnClick = (cell) => {
     // function that handles the cell onClick attribute i.e. when a player chooses to fill a cell in the grid 
-    if (this.state.grid_vals[cell]) {return}
+    if (this.state.gameState > -1) {
+      this.resetOnClick() 
+      return
+    }
+    if (this.state.gridVals[cell]) {return}
 
-    const playerSymbol = ['O','X'][this.state.curr_player] // determines the symbol to use given which player's turn to move
-    let grid_vals = [...this.state.grid_vals]
-    grid_vals[cell] = playerSymbol
-    this.setState({grid_vals})
-    this.setState({curr_player: (this.state.curr_player+1)%(this.state.num_players+1)})
+    const playerSymbol = ['O','X'][this.state.currPlayer] // determines the symbol to use given which player's turn to move
+    let gridVals = [...this.state.gridVals]
+    gridVals[cell] = playerSymbol
+    this.setState({gridVals})
+    this.setState({currPlayer: (this.state.currPlayer+1)%(this.state.numPlayers+1)})
+    
+    const [currState, triplet] = game.winCheck(cell,this.state.gridVals, this.state.currPlayer)
+    if (currState > -1) {
+      this.setState({gameState: currState, winningTriplet: triplet})
+    } else {
+      const endFlag = game.endCheck(this.state.cellsLeft)
+      if (endFlag) {
+        this.setState({gameState: 0})
+      } else {
+        this.setState({cellsLeft: this.state.cellsLeft -1})
+      }
+    }
   }
 
   modeOnClick = () => {
     // function to handle changing between single and two player game modes
     this.resetOnClick()
-    this.setState({num_players: (this.state.num_players+1)%2})
+    this.setState({numPlayers: (this.state.numPlayers+1)%2})
   }
 
   difficultyOnClick = () => {
     // function to handle changing game difficulty
     this.resetOnClick()
-    this.setState({game_difficulty: (this.state.game_difficulty+1)%3})
+    this.setState({gameDifficulty: (this.state.gameDifficulty+1)%3})
   }
 
   resetOnClick = () => {
     // function to reset the grid
-    this.setState({grid_vals: ["","","","","","","","",""]})
+    this.setState({cellsLeft: 9, currPlayer: 0, gridVals: ["","","","","","","","",""], gameState:-1, winningTriplet:[]})
   }
 
   /* RENDERING FUNCTIONS */
@@ -51,8 +70,8 @@ class TicTacToe extends Component{
     // renders buttons for selecting number of players and difficulty, as well as option to reset board
     return (
       <div className="grid grid-cols-2 gap-2 w-1/4 text-center mt-2">
-        <button className="gamemode-selector" onClick={() => this.modeOnClick()}> {this.state.players[this.state.num_players]} </button>
-        <button className="gamemode-selector" onClick={() => this.difficultyOnClick()}> {this.state.difficulties[this.state.game_difficulty]} </button>
+        <button className="gamemode-selector" onClick={() => this.modeOnClick()}> {this.state.players[this.state.numPlayers]} </button>
+        <button className="gamemode-selector" onClick={() => this.difficultyOnClick()}> {this.state.difficulties[this.state.gameDifficulty]} </button>
         <button className="gamemode-selector col-span-2 w-1/2 justify-self-center"onClick={() => this.resetOnClick()}> Reset</button>
       </div>
     )
@@ -60,15 +79,23 @@ class TicTacToe extends Component{
 
   renderCell = (n) => {
     // renders each individual cell depending on whether it contains a value
-
-    if (this.state.grid_vals[n]) {
+    if (this.state.gameState > -1) {
+      if (this.state.gameState == 0) {
+        var className = "cell-button bg-red-200"
+      }
+      else if (this.state.winningTriplet.includes(n)){
+        var className = "cell-button bg-emerald-400"
+      } else {
+        var className = "cell-button active:bg-red-500"
+      }
+    } else if (this.state.gridVals[n]) {
       var className = "cell-button active:bg-red-500"
     } else{
       var className = "cell button hover:bg-emerald-200"
     }
     return (
       <button className={className} onClick={()=> this.cellOnClick(n)}>
-        {this.state.grid_vals[n]}
+        {this.state.gridVals[n]}
       </button>
     )
   }
