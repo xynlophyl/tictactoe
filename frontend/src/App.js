@@ -1,11 +1,11 @@
 import React from 'react';
 import TicTacToe from './components/GamePage.js'
+// import TicTacToe from './components/newGamePage.js';
 
 import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Link
 } from "react-router-dom";
 
 export default function App() {
