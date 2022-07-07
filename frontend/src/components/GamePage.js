@@ -1,49 +1,72 @@
-
-
-
 import React, { Component } from "react";
 import Grid from '../classes/GridState.js'; 
+import AI from '../classes/searchAgents.js';
 
 class TicTacToe extends Component{
   constructor(props) {
     super(props);
     this.state = { 
-      difficulties: ['Easy','Medium','Hard'],
+      difficulties: ['Easy','Medium','Hard', "MiniMax", "ExpectiMax"],
       players: ['Computer','Two Player'],
-      gameDifficulty: 0,
       grid: new Grid(),
+      agent: new AI(0),
     };
   };
+
+  componentDidMount = () => {
+    if (this.state.grid.playerMode === 0 && this.state.grid.currPlayer === 1) {
+      let grid = new Grid();
+      let agentAction = this.state.agent.getFirstMove();
+      grid.updateMove(agentAction);
+      this.setState({grid: grid});
+    };
+  }
 
   /* ON CLICK FUNCTIONS */
 
   cellOnClick = (cell) => {
+    console.log('player', this.state.grid.currPlayer)
     const grid = this.state.grid;
-    if (grid.numPlayers === 1){
-      grid.updateMove(cell);
-      grid.incrementTurn();
-    }
-    else { // against computer
-      grid.updateMove(cell)
+    grid.updateMove(cell);
+
+    if (grid.playerMode !== 1){
+      // against computer
+      let agentAction = this.state.agent.getAction(grid);
+      grid.updateMove(agentAction);
     }
     this.setState({grid: grid});
-
   }
 
   modeOnClick = () => {
     const grid = this.state.grid
     grid.updateMode();
-    grid.resetGrid();
+    this.resetOnClick();
+    // grid.resetGrid();
     this.setState({grid: grid});
-    return;
+  };
+
+  difficultyOnClick = () => {
+    // const grid = this.state.grid;
+    this.resetOnClick();
+    const agent = this.state.agent;
+    // grid.resetGrid();
+    agent.updateDifficulty();
+    this.setState({
+      agent: agent, 
+      // grid: grid
+    });
   };
 
   resetOnClick = () => {
     // function to reset the grid
-    const grid = this.state.grid
-    grid.resetGrid()
-    this.setState({grid: grid})
-    return;
+    const grid = this.state.grid;
+    grid.resetGrid();
+
+    if (grid.playerMode === 0 && grid.currPlayer === 1) {
+      let agentAction = this.state.agent.getFirstMove();
+      grid.updateMove(agentAction);
+    };
+    this.setState({grid: grid});
   };
 
   /* RENDERING FUNCTIONS */
@@ -53,8 +76,8 @@ class TicTacToe extends Component{
     const grid = this.state.grid
     return (
       <div className="grid grid-cols-2 gap-2 w-1/4 text-center mt-2">
-        <button className="gamemode-selector" onClick={() => this.modeOnClick()}> {this.state.players[grid.numPlayers]} </button>
-        <button className="gamemode-selector" onClick={() => this.difficultyOnClick()}> {this.state.difficulties[this.state.gameDifficulty]} </button>
+        <button className="gamemode-selector" onClick={() => this.modeOnClick()}> {this.state.players[grid.playerMode]} </button>
+        <button className="gamemode-selector" onClick={() => this.difficultyOnClick()}> {this.state.difficulties[this.state.agent.difficulty]} </button>
         <button className="gamemode-selector col-span-2 w-1/2 justify-self-center"onClick={() => this.resetOnClick()}> Reset</button>
       </div>
     );
@@ -133,7 +156,7 @@ class TicTacToe extends Component{
             {this.renderGrid()}
           </div>
           <div className="text-center m-7">
-              How I Made This?
+              How I Made This????
           </div>
         </div>
       </main>
