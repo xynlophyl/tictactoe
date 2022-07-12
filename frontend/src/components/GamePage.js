@@ -25,10 +25,12 @@ class TicTacToe extends Component{
   /* ON CLICK FUNCTIONS */
 
   cellOnClick = (cell) => {
-    console.log('player', this.state.grid.currPlayer)
+    if (this.state.grid.gridVals[cell]) {
+      return;
+    }
+
     const grid = this.state.grid;
     grid.updateMove(cell);
-
     if (grid.playerMode !== 1){
       // against computer
       let agentAction = this.state.agent.getAction(grid);
