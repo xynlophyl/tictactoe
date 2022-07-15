@@ -15,7 +15,7 @@ class TicTacToe extends Component{
 
   componentDidMount = () => {
     if (this.state.grid.playerMode === 0 && this.state.grid.currPlayer === 1) {
-      let grid = new Grid();
+      let grid = this.state.grid;
       let agentAction = this.state.agent.getFirstMove();
       grid.updateMove(agentAction);
       this.setState({grid: grid});
@@ -114,31 +114,31 @@ class TicTacToe extends Component{
     return (
       <div className="grid grid-cols-3 grid-row-3 w-3/12">
         <div className="cell border-r-2 border-b-2">
-          {this.renderCell(0)}
+          {this.renderCell(0)} 0
         </div>
         <div className="cell border-b-2 border-r-2">
-          {this.renderCell(1)}
+          {this.renderCell(1)} 1
         </div>
         <div className="cell border-b-2 ">
-          {this.renderCell(2)}
+          {this.renderCell(2)} 2
         </div>
         <div className="cell border-b-2 border-r-2">
-          {this.renderCell(3)}
+          {this.renderCell(3)} 3
         </div>
         <div className="cell border-b-2 border-r-2">
-          {this.renderCell(4)}
+          {this.renderCell(4)} 4
         </div>
         <div className="cell border-b-2">
-          {this.renderCell(5)}
+          {this.renderCell(5)} 5
         </div>
         <div className="cell border-r-2">
-          {this.renderCell(6)}
+          {this.renderCell(6)} 6
         </div>
         <div className="cell border-r-2">
-          {this.renderCell(7)}
+          {this.renderCell(7)} 7
         </div>
         <div className="cell">
-          {this.renderCell(8)}
+          {this.renderCell(8)} 8
         </div>
       </div>
     );

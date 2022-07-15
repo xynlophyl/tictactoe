@@ -1,5 +1,3 @@
-node_modules
-build
 frontend/src/components/newGamePage.js
 frontend/src/classes/gameLogic.js
 frontend/src/classes/computer.js
