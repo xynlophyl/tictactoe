@@ -1,10 +1,8 @@
-import React from "react";
 import Grid from './GridState.js'
 
 class AI {
   constructor(difficulty) {
-    // this.difficulty = difficulty;
-    this.difficulty = 4
+    this.difficulty = difficulty;
     this.agents = [new RandomAgent(), new BlockAgent(), new NextMoveAgent(), new MiniMaxAgent(), new ExpectiMaxAgent()];
     this.initialVals = [3,2,3,2,4,2,3,2,3]
     this.grid = new Grid()
@@ -25,11 +23,11 @@ class AI {
     // get first move for search agents using eval function, since otherwise it will always start in the center
     // uses weighted average of the actual evaluations for each cell to get a random first move
 
-    let returnProb = Math.random()*24
+    let returnProb = Math.random()*24;
 
     let prefixSum = 0
     for (let i = 0; i < this.initialVals.length; i++){
-      prefixSum += this.initialVals[i]
+      prefixSum += this.initialVals[i];
       if (prefixSum > returnProb) {
         return i;
       };
@@ -40,7 +38,6 @@ class AI {
 class searchAgent {
 
   eval(gridVals) {
-    // console.log(gridVals)
     let score = 0
     for (let row = 0; row < 3; row ++) { // evaluates row
       let cell = row*3;
@@ -138,7 +135,6 @@ class MiniMaxAgent extends searchAgent{
     for (let cell of grid.getLegalActions(grid.gridVals)) {
       let val = -1;
       let nextGridVals = grid.getNextGridVals(cell, 1)
-      // console.log(nextGridVals)
       let [state, winningTriplet] = grid.endCheck(nextGridVals);
 
       if (state >= 0) {
@@ -148,8 +144,6 @@ class MiniMaxAgent extends searchAgent{
         nextGrid.gridVals = nextGridVals;
         val = this.miniMax(nextGrid, 1);
       }
-
-      // console.log(cell, val, state)
 
       if (val > best_eval) {
         best_eval = val;
@@ -175,7 +169,6 @@ class MiniMaxAgent extends searchAgent{
       const [state, winningTriplet] = grid.endCheck(nextGridVals)
 
       if (state >= 0) {
-        // console.log(nextGridVals, this.eval(nextGridVals))
         evals.push(this.eval(nextGridVals));
       } else {
         // append the eval of all ending grid states
@@ -186,7 +179,6 @@ class MiniMaxAgent extends searchAgent{
     }};
     if (player === 1) {
       // return computer best move
-      // console.log('max', Math.max(...evals), evals)
       return Math.max(...evals)
     } else {
       // return players best move
@@ -207,7 +199,6 @@ class ExpectiMaxAgent extends searchAgent {
     for (let cell of grid.getLegalActions(grid.gridVals)) {
       let val = -1;
       let nextGridVals = grid.getNextGridVals(cell, 1)
-      // console.log(nextGridVals)
       let [state, winningTriplet] = grid.endCheck(nextGridVals);
 
       if (state >= 0) {
@@ -217,7 +208,6 @@ class ExpectiMaxAgent extends searchAgent {
         nextGrid.gridVals = nextGridVals;
         val = this.expectiMax(nextGrid, 1);
       }
-      // console.log(cell, val, state)
 
       if (val > best_eval) {
         best_eval = val;
@@ -227,7 +217,6 @@ class ExpectiMaxAgent extends searchAgent {
 
     return best_action;
   }
-
 
    expectiMax(grid, depth) {
     // calculating the best moves for each player
@@ -261,57 +250,5 @@ class ExpectiMaxAgent extends searchAgent {
     return evals.reduce((currSum, curr) => currSum + curr, 0)/evals.length;
   };
 };
-
-
-//   getAction(grid) {
-//     var best_eval = Number.NEGATIVE_INFINITY;
-//     var best_action = -1;
-
-//     grid.getLegalActions().forEach((action) => {
-//       let val = -1;
-//       let nextGridVals = grid.getnextGridVals(action, 1);
-//       if (nextGridVals.gameState > 0) {
-//         val = 1;
-//       } else if (nextGridVals.gameState === 0) {
-//         val = 0;
-//       } else {
-//         val = this.expectiMax(grid, 1);
-//       }
-//       if (val > best_eval) {
-//         best_eval = val;
-//         best_action = action; 
-//       };
-//     });
-//     return best_action;
-//   }
-
-//   expectiMax(grid, depth) {
-//     let evals = [];
-//     let player = (depth-1)%2;
-//     let legalActions = grid.getLegalActions();
-
-//     if (depth >= this.depth*2) {
-//       return this.eval(grid);
-//     };
-
-//     legalActions.forEach((action) => {
-//       let nextGridVals = grid.getnextGridVals(action, player)
-//       if (nextGridVals.gameState > 0) {
-//         evals.push(1);
-//       } else if (nextGridVals.gameState === 0) {
-//         evals.push(0);
-//       } else {
-//         // append the eval of all ending grid states, prioritizing faster winning endings
-//         evals.append((0.1**depth)*this.expectiMax(nextGridVals,depth+1));
-//       }
-//     if (player) {
-//       // return computer best move
-//       return Math.max(evals);
-//     } else {
-//       // return player best move
-//       return evals.reduce((currSum, curr) => currSum + curr, 0);
-//     }});
-//   };
-// };
 
 export default AI;

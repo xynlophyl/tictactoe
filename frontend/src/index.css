@@ -23,29 +23,64 @@ code {
     padding: theme('spacing.6');
     box-shadow: theme('boxShadow.xl');
   }
-  .cell {
+  #cell {
     aspect-ratio: 1 / 1;
     text-align: center;
     border-color:black;
     display: flex;
-    justify-content: center
+    justify-content: center;
   }
 
-  .cell-button {
+  #cell-button {
     width:100%;
     font-size: 2rem; /* 128px */
     line-height: 1;
   }
 
-  .tictactoe {
+  #tictactoe {
     background-color: ;
   }
 
-  .gamemode-selector {
+  #toggle-button {
     border-radius: 0.5rem;
     border-width: 2px;
     border-color: black;
+    padding: 0.4rem;
   }
+  #toggle-button:hover {
+    font-weight: 700;
+  }
+
+
+  #modal-grid-heading {
+    grid-column: 1 / -1;
+    grid-row: span 1 / span 1;
+    font-weight: 700;
+    text-align: center;
+    padding-bottom: 4px;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+
+  #modal-grid-row-subhead {
+    display: flex;
+    align-self: center;
+    justify-content: center;
+    grid-column: span  3 / span 3;
+    grid-row: span 1 / span 1;
+    font-weight: 600;
+    text-align: center;
+    padding-bottom: 2px;
+    /* border: 1px solid black; */
+  }
+
+  #modal-grid-row-desc {
+    grid-row: span 1 / span 1;
+    padding-right: 0.5rem;
+    /* border: 1px solid black; */
+  }
+  
+
 
   /* ... */
 }
