@@ -1,4 +1,4 @@
-# Tic-Tac-Toe
+# [Tic-Tac-Toe](xynlophyl.github.io/tictactoe/)
 A personal project to explore the use of AI and Game Theory in the simple game of Tic Tac Toe
 
 # Installation
