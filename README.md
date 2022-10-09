@@ -12,7 +12,7 @@ git clone https://github.com/xynlophyl/tictactoe.git
 
 #### 1. Through web app: 
 
-    You can access the web app deployment of the game through this [link](xynlophyl.github.io/tictactoe/)
+    You can access the web app deployment of the game through the link: xynlophyl.github.io/tictactoe/
 
 #### 2. Through installation (react.js version): 
 
